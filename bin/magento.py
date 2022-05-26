@@ -1,7 +1,10 @@
-import pty
 import string
 from fabric.connection import Connection
 from tif.fabric import cli
+
+def list_commands(c : Connection, magento_root: string):
+    with c.cd(magento_root):
+        c.run("bin/magento list")
 
 def run(c : Connection, magento_root: string):
     with c.cd(magento_root):
