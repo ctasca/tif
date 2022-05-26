@@ -17,6 +17,11 @@ def ls(c : Connection, dir : string):
     with c.cd(dir):
         c.run("ls")
 
+def ls_dir(c : Connection, dir : string):
+    ls_dir = cli.prompt(">>> Enter directory to list: ")
+    with c.cd(dir + "/" + ls_dir):
+        c.run("ls")
+
 def ls_la(c : Connection, dir : string):
     with c.cd(dir):
         c.run("ls -la")
