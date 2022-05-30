@@ -88,6 +88,19 @@ def stash_drop(c : Connection, repo_dir : string):
     with c.cd(repo_dir):
         c.run("git stash drop")
 
+def stash_pop(c : Connection, repo_dir : string):
+    with c.cd(repo_dir):
+        c.run("git stash pop")
+
 def reset_head(c : Connection, repo_dir : string):
     with c.cd(repo_dir):
         c.run("git reset --hard HEAD")
+
+def remove(c : Connection, repo_dir : string):
+     with c.cd(repo_dir):
+        file = cli.prompt(">>> Enter file to remove. Type 'exit' to finish the operation: ")
+        while file not in ["exit"]:
+            c.run("git rm {0}".format(file))
+            status(c, repo_dir)
+            file = cli.prompt(">>> Enter file to remove. Type 'exit' to finish the operation: ")
+        status(c, repo_dir)
