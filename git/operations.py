@@ -104,3 +104,7 @@ def remove(c : Connection, repo_dir : string):
             status(c, repo_dir)
             file = cli.prompt(">>> Enter file to remove. Type 'exit' to finish the operation: ")
         status(c, repo_dir)
+
+def log(c : Connection, repo_dir : string, logs = "-5"):
+    with c.cd(repo_dir):
+        c.run("git log -p {0}".format(logs))
