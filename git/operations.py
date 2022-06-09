@@ -41,6 +41,32 @@ def pull(c : Connection, repo_dir : string):
         else:
             cli.puts("!!! Aborted")
 
+def pull_branch(c : Connection, repo_dir : string):
+    with c.cd(repo_dir):
+        branch = current_branch(c, repo_dir)
+        origin_branch = cli.prompt(">>> Enter branch to pull from origin: ")
+        confirm = cli.cli_confirm("You are about to pull the remote branch {0} into {1}. Are you sure?".format(origin_branch, branch))
+        if (confirm == "y"):
+            c.run("git pull origin {0}".format(origin_branch), pty=True)
+        else:
+            cli.puts("!!! Aborted")
+
+def origin_merge(c : Connection, repo_dir : string):
+    with c.cd(repo_dir):
+        cli.puts("** Fetching origin...")
+        fetch(c, repo_dir)
+        branch(c, repo_dir)
+        local_branch = current_branch(c, repo_dir)
+        origin_branch = cli.prompt(">>> Enter origin branch to merge: ")
+        if (local_branch and origin_branch):
+            confirm = cli.cli_confirm("You are about to merge the origin branch {0} into local branch {1}. Are you sure?".format(origin_branch, local_branch))
+            if (confirm == "y"):
+                c.run("git merge origin/{0}".format(origin_branch), pty=True)
+            else:
+                cli.puts("!!! Aborted")
+        else:
+            cli.puts("!!! Aborted")
+
 def push(c : Connection, repo_dir : string):
     with c.cd(repo_dir):
         branch = current_branch(c, repo_dir)
