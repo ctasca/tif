@@ -110,6 +110,10 @@ def stash(c : Connection, repo_dir : string):
     with c.cd(repo_dir):
         c.run("git stash")
 
+def stash_list(c : Connection, repo_dir : string):
+    with c.cd(repo_dir):
+        c.run("git stash list")
+
 def stash_drop(c : Connection, repo_dir : string):
     with c.cd(repo_dir):
         c.run("git stash drop")

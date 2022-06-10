@@ -328,6 +328,13 @@ def lstashd(context):
     git.stash_drop(context, local_magento_root)
 
 @task
+def lstashl(context):
+    """
+    Locally execute git stash list command
+    """
+    git.stash_list(context, local_magento_root)
+
+@task
 def lpull(context):
     """
     Locally execute git pull branch from origin command. Automatically detects branch to pull.
