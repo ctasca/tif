@@ -17,9 +17,27 @@ def install(c : Connection, install_dir : string):
 
 def delete_generated(c : Connection, magento_root : string):
     with c.cd(magento_root):
-        confirm = cli.cli_confirm("You are about to delete the generated directory, Are you sure?")
+        confirm = cli.cli_confirm("You are about to empty the generated directory, Are you sure?")
         if (confirm == "y"):
             c.run("rm -rf generated/*")
+            cli.puts(".:~ Done")
+        else:
+            cli.puts("!!! Aborted")
+
+def delete_static(c : Connection, magento_root : string):
+    with c.cd(magento_root):
+        confirm = cli.cli_confirm("You are about to empty the static directory, Are you sure?")
+        if (confirm == "y"):
+            c.run("rm -rf pub/static/*")
+            cli.puts(".:~ Done")
+        else:
+            cli.puts("!!! Aborted")
+
+def delete_logs(c : Connection, magento_root : string):
+    with c.cd(magento_root):
+        confirm = cli.cli_confirm("You are about to empty the var/log directory, Are you sure?")
+        if (confirm == "y"):
+            c.run("rm -rf var/log/*")
             cli.puts(".:~ Done")
         else:
             cli.puts("!!! Aborted")
