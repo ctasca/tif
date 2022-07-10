@@ -2,16 +2,19 @@ import string
 from fabric.connection import Connection
 from fabric.transfer import Transfer
 from tif.fabric import cli
+from tif.fabric.logger import Logger
 from tif.fabric.CommandPrefix import CommandPrefix
 
 def gunzip(c : Connection , dir : string, listFiles = True, command_prefix = ""):
     with c.cd(dir):
         if (listFiles):
             command = "ls"
+            Logger().log("Running command '{}'".format(command))
             c.run(CommandPrefix(command, command_prefix).prefix_command())
         zip = cli.prompt(">>> Enter file to gunzip: ")
         if (zip):
             command = "gunzip {0}".format(zip)
+            Logger().log("Running command '{}'".format(command))
             c.run(CommandPrefix(command, command_prefix).prefix_command())
         else:
             cli.puts("!!! Aborted")
@@ -19,16 +22,20 @@ def gunzip(c : Connection , dir : string, listFiles = True, command_prefix = "")
 def ls(c : Connection, dir : string, command_prefix = ""):
     with c.cd(dir):
         command = "ls"
+        Logger().log("Running command '{}'".format(command))
         c.run(CommandPrefix(command, command_prefix).prefix_command())
 
 def rm(c : Connection, dir : string, command_prefix = ""):
     with c.cd(dir):
-        c.run("ls")
+        command = "ls"
+        Logger().log("Running command '{}'".format(command))
+        c.run(CommandPrefix(command, command_prefix).prefix_command())
         to_delete = cli.prompt(">>> Enter directory/file to delete: ")
         if c.run(CommandPrefix('test -d {0}'.format(to_delete), command_prefix).prefix_command(), warn=True):
             confirm = cli.cli_confirm("You are about to delete the directory {0}. Are you sure?".format(to_delete))
             if (confirm == "y"):
                 command = "rm -rf {0}".format(to_delete)
+                Logger().log("Running command '{}'".format(command))
                 c.run(CommandPrefix(command, command_prefix).prefix_command())
             else:
                 cli.puts("!!! Aborted")
@@ -36,6 +43,7 @@ def rm(c : Connection, dir : string, command_prefix = ""):
             confirm = cli.cli_confirm("You are about to delete the file {0}. Are you sure?".format(to_delete))
             if (confirm == "y"):
                 command = "rm {0}".format(to_delete)
+                Logger().log("Running command '{}'".format(command))
                 c.run(CommandPrefix(command, command_prefix).prefix_command())
             else:
                 cli.puts("!!! Aborted")
@@ -46,11 +54,15 @@ def rm(c : Connection, dir : string, command_prefix = ""):
 def ls_dir(c : Connection, dir : string, command_prefix = ""):
     ls_dir = cli.prompt(">>> Enter directory to list: ")
     with c.cd(dir + "/" + ls_dir):
-        c.run(CommandPrefix("ls", command_prefix).prefix_command())
+        command = "ls"
+        Logger().log("Running command '{}'".format(command))
+        c.run(CommandPrefix(command, command_prefix).prefix_command())
 
 def ls_la(c : Connection, dir : string, command_prefix = ""):
     with c.cd(dir):
-        c.run(CommandPrefix("ls -la", command_prefix).prefix_command())
+        command = "ls -la"
+        Logger().log("Running command '{}'".format(command))
+        c.run(CommandPrefix(command, command_prefix).prefix_command())
 
 def get(c : Connection):
     t = Transfer(c)
