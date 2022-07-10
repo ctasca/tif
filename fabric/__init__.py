@@ -1,1 +1,1 @@
-__all__ = ["Colors", "confirm", "prompt", "puts"]
+__all__ = ["Colors", "confirm", "prompt", "puts", "CommandPrefix"]

@@ -1,8 +1,9 @@
+import pty
 import string
-from turtle import write_docstringdict
 from fabric.connection import Connection
-from tif.fabric import cli
+from tif.fabric.CommandPrefix import CommandPrefix
 
-def install(c : Connection, install_dir : string):
+def install(c : Connection, install_dir : string, command_prefix=""):
     with c.cd(install_dir):
-        c.run("composer install",  pty=True)
+        command = "composer install"
+        c.run(CommandPrefix(command, command_prefix).prefix_command(), pty=True)
