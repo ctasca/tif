@@ -6,6 +6,12 @@ from tif.fabric.CommandPrefix import CommandPrefix
 
 logger = Logger
 
+def get_remote_url(c: Connection, repo_dir: string, command_prefix=""):
+    with c.cd(repo_dir):
+        command = "git config --get remote.origin.url"
+        Logger().log("Running command '{}'".format(command))
+        c.run(CommandPrefix(command, command_prefix).prefix_command())
+
 def clone_repo(c : Connection, clone_dir: string, repo: string, command_prefix = ""):
     with c.cd(clone_dir):
         command = "git clone {0} .".format(repo)
