@@ -23,6 +23,12 @@ def install(c : Connection, install_dir : string, command_prefix=""):
         Logger().log("Running command '{}'".format(command))
         c.run(CommandPrefix(command, command_prefix).prefix_command())
 
+def mode_show(c : Connection, install_dir : string, command_prefix=""):
+    with c.cd(install_dir):
+        command = "bin/magento deploy:mode:show"
+        Logger().log("Running command '{}'".format(command))
+        c.run(CommandPrefix(command, command_prefix).prefix_command())
+
 def delete_generated(c : Connection, magento_root : string, command_prefix=""):
     with c.cd(magento_root):
         confirm = cli.cli_confirm("You are about to empty the generated directory, Are you sure?")

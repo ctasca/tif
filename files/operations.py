@@ -70,6 +70,12 @@ def find_mount(c : Connection, dir : string, command_prefix = ""):
         Logger().log("Running command '{}'".format(command))
         c.run(CommandPrefix(command, command_prefix).prefix_command())
 
+def mount_column(c : Connection, dir : string, command_prefix = ""):
+    with c.cd(dir):
+        command = "mount | column -t"
+        Logger().log("Running command '{}'".format(command))
+        c.run(CommandPrefix(command, command_prefix).prefix_command())
+
 def get(c : Connection):
     t = Transfer(c)
     remote_file = cli.prompt(">>> Enter remote file path to download (relative to home directory): ")
