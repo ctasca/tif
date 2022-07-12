@@ -135,3 +135,9 @@ def cat_log(c : Connection, magento_root : string, command_prefix=""):
             command = "cat {0}".format(log)
             Logger().log("Running command '{}'".format(command))
             c.run(CommandPrefix(command, command_prefix).prefix_command(), pty=True)
+
+def admin_user_create(c: Connection, magento_root : string, command_prefix=""):
+    with c.cd(magento_root):
+        command = "bin/magento admin:user:create"
+        Logger().log("Running command '{}'".format(command))
+        c.run(CommandPrefix(command, command_prefix).prefix_command(), pty=True)

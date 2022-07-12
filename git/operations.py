@@ -3,6 +3,7 @@ from fabric.connection import Connection
 from tif.fabric import cli
 from tif.fabric.logger import Logger
 from tif.fabric.CommandPrefix import CommandPrefix
+from invoke import Responder
 
 logger = Logger
 
@@ -20,7 +21,7 @@ def clone_repo(c : Connection, clone_dir: string, repo: string, command_prefix =
 
 def switch_branch(c: Connection, repo_dir: string, command_prefix = ""):
     with c.cd(repo_dir):
-        branch(c, repo_dir)
+        branch(c, repo_dir, command_prefix)
         sbranch = cli.prompt(">>> Enter branch to switch to: ")
         if (sbranch):
             command = "git checkout {0}".format(sbranch)
@@ -49,15 +50,15 @@ def current_branch(c : Connection, repo_dir : string, command_prefix = "") -> st
     with c.cd(repo_dir):
         command = "git rev-parse --abbrev-ref HEAD"
         Logger().log("Running command '{}'".format(command))
-        c.run(CommandPrefix(command, command_prefix).prefix_command(), hide=True)
-        return branch.stdout
+        branch = c.run(CommandPrefix(command, command_prefix).prefix_command(), hide=True)
+        return branch.stdout.strip()
 
 def pull(c : Connection, repo_dir : string, command_prefix = ""):
     with c.cd(repo_dir):
         branch = current_branch(c, repo_dir, command_prefix)
         confirm = cli.cli_confirm("You are about to pull the remote branch {0}. Are you sure?".format(branch))
         if (confirm == "y"):
-            command = "git pull origin {0}".format(branch)
+            command = "git pull origin {}".format(branch)
             Logger().log("Running command '{}'".format(command))
             c.run(CommandPrefix(command, command_prefix).prefix_command(), pty=True)
         else:

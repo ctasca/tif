@@ -54,7 +54,7 @@ def rm(c : Connection, dir : string, command_prefix = ""):
 def ls_dir(c : Connection, dir : string, command_prefix = ""):
     ls_dir = cli.prompt(">>> Enter directory to list: ")
     with c.cd(dir + "/" + ls_dir):
-        command = "ls"
+        command = "ls -la"
         Logger().log("Running command '{}'".format(command))
         c.run(CommandPrefix(command, command_prefix).prefix_command())
 
@@ -64,8 +64,24 @@ def ls_la(c : Connection, dir : string, command_prefix = ""):
         Logger().log("Running command '{}'".format(command))
         c.run(CommandPrefix(command, command_prefix).prefix_command())
 
+def find_mount(c : Connection, dir : string, command_prefix = ""):
+    with c.cd(dir):
+        command = "findmnt -T ."
+        Logger().log("Running command '{}'".format(command))
+        c.run(CommandPrefix(command, command_prefix).prefix_command())
+
 def get(c : Connection):
     t = Transfer(c)
     remote_file = cli.prompt(">>> Enter remote file path to download (relative to home directory): ")
     local_file = cli.prompt(">>> Enter local file path to download to (relative to fabfile location): ")
     t.get(remote_file, local_file)
+
+def cat(c : Connection, magento_root : string, command_prefix=""):
+        with c.cd(magento_root):
+            command = "ls"
+            Logger().log("Running command '{}'".format(command))
+            c.run(CommandPrefix(command, command_prefix).prefix_command(), pty=True)
+            log = cli.prompt(">>> Specify log to cat: ")
+            command = "cat {0}".format(log)
+            Logger().log("Running command '{}'".format(command))
+            c.run(CommandPrefix(command, command_prefix).prefix_command(), pty=True)
