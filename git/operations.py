@@ -105,10 +105,23 @@ def push(c : Connection, repo_dir : string, command_prefix = ""):
         else:
             cli.puts("!!! Aborted")
 
-def fetch(c : Connection, repo_dir : string, command_prefix = ""):
+def force_push(c : Connection, repo_dir : string, command_prefix = ""):
+    with c.cd(repo_dir):
+        branch = current_branch(c, repo_dir, command_prefix)
+        confirm = cli.cli_confirm("You are about to force push to origin branch {0}. Are you sure?".format(branch))
+        if (confirm == "y"):
+            command = "git push -f origin {0}".format(branch)
+            Logger().log("Running command '{}'".format(command))
+            c.run(CommandPrefix(command, command_prefix).prefix_command(), pty=True)
+        else:
+            cli.puts("!!! Aborted")
+
+def fetch(c : Connection, repo_dir : string, command_prefix = "", repo_url = None):
     with c.cd(repo_dir):
         command = "git fetch"
         Logger().log("Running command '{}'".format(command))
+        if (repo_url):
+            command = command + " " + repo_url
         c.run(CommandPrefix(command, command_prefix).prefix_command(), pty=True)
 
 def status(c : Connection, repo_dir : string, command_prefix = ""):
@@ -193,3 +206,20 @@ def log(c : Connection, repo_dir : string, logs = "-5", command_prefix = ""):
         command = "git log -p {0}".format(logs)
         Logger().log("Running command '{}'".format(command))
         c.run(CommandPrefix(command, command_prefix).prefix_command())
+
+def reset_commit(c : Connection, repo_dir : string, logs = "-5", command_prefix = ""):
+    with c.cd(repo_dir):
+        command = "git reflog"
+        Logger().log("Running command '{}'".format(command))
+        c.run(CommandPrefix(command, command_prefix).prefix_command())
+        hash = cli.prompt(">>> Enter commit hash to be reset: ")
+        if (hash):
+            confirm = cli.cli_confirm("You are about to execute git reset --hard {0}. Are you sure?".format(hash))
+            if (confirm == 'y'):
+                command = "git reset --hard {0}".format(hash)
+                Logger().log("Running command '{}'".format(command))
+                c.run(CommandPrefix(command, command_prefix).prefix_command())
+            else:
+                cli.puts("!!! Aborted")
+        else:
+            cli.puts("!!! Aborted")
