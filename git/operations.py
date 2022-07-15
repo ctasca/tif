@@ -3,9 +3,6 @@ from fabric.connection import Connection
 from tif.fabric import cli
 from tif.fabric.logger import Logger
 from tif.fabric.CommandPrefix import CommandPrefix
-from invoke import Responder
-
-logger = Logger
 
 def get_remote_url(c: Connection, repo_dir: string, command_prefix=""):
     with c.cd(repo_dir):
