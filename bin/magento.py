@@ -12,6 +12,7 @@ def list_commands(c : Connection, magento_root: string, command_prefix=""):
 
 def run(c : Connection, magento_root: string, command_prefix=""):
     with c.cd(magento_root):
+        list_commands(c, magento_root, command_prefix)
         command = cli.prompt(">>> Enter bin/magento command to run: ")
         command = "bin/magento {0}".format(command)
         Logger().log("Running command '{}'".format(command))
