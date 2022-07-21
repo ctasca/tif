@@ -18,6 +18,12 @@ def run(c : Connection, magento_root: string, command_prefix=""):
         Logger().log("Running command '{}'".format(command))
         c.run(CommandPrefix(command, command_prefix).prefix_command())
 
+def run_command(c : Connection, magento_root: string, command: string, command_prefix=""):
+    with c.cd(magento_root):
+        command = "bin/magento {0}".format(command)
+        Logger().log("Running command '{}'".format(command))
+        c.run(CommandPrefix(command, command_prefix).prefix_command())
+
 def install(c : Connection, install_dir : string, command_prefix=""):
     with c.cd(install_dir):
         command = "bin/magento setup:install"
@@ -57,6 +63,17 @@ def delete_logs(c : Connection, magento_root : string, command_prefix=""):
         confirm = cli.cli_confirm("You are about to empty the var/log directory, Are you sure?")
         if (confirm == "y"):
             command = "rm -rf var/log/*"
+            Logger().log("Running command '{}'".format(command))
+            c.run(CommandPrefix(command, command_prefix).prefix_command())
+            cli.puts(".:~ Done")
+        else:
+            cli.puts("!!! Aborted")
+
+def delete_cache(c : Connection, magento_root : string, command_prefix=""):
+    with c.cd(magento_root):
+        confirm = cli.cli_confirm("You are about to empty the var/cache directory, Are you sure?")
+        if (confirm == "y"):
+            command = "rm -rf var/cache/*"
             Logger().log("Running command '{}'".format(command))
             c.run(CommandPrefix(command, command_prefix).prefix_command())
             cli.puts(".:~ Done")

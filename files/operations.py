@@ -82,12 +82,23 @@ def get(c : Connection):
     local_file = cli.prompt(">>> Enter local file path to download to (relative to fabfile location): ")
     t.get(remote_file, local_file)
 
-def cat(c : Connection, magento_root : string, command_prefix=""):
-        with c.cd(magento_root):
+def put(c : Connection, remote_working_dir = None):
+    local_file = cli.prompt(">>> Enter local file path to upload (relative to fabfile location): ")
+    remote_file = cli.prompt(">>> Enter remote file path to upload (relative to home directory or specified working dir): ")
+    t = Transfer(c)
+    if (remote_working_dir):
+        remote_dir = remote_working_dir + '/' + remote_file
+        cli.puts(">>> Uploading to {}".format(remote_dir))
+        t.put(local=local_file, remote=remote_dir)
+    else:
+         t.put(local=local_file, remote=remote_file)
+
+def cat(c : Connection, dir : string, command_prefix=""):
+        with c.cd(dir):
             command = "ls"
             Logger().log("Running command '{}'".format(command))
             c.run(CommandPrefix(command, command_prefix).prefix_command(), pty=True)
-            log = cli.prompt(">>> Specify log to cat: ")
+            log = cli.prompt(">>> Specify file to cat: ")
             command = "cat {0}".format(log)
             Logger().log("Running command '{}'".format(command))
             c.run(CommandPrefix(command, command_prefix).prefix_command(), pty=True)

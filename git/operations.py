@@ -198,6 +198,15 @@ def remove(c : Connection, repo_dir : string, command_prefix = ""):
             file = cli.prompt(">>> Enter file to remove. Type 'exit' to finish the operation: ")
         status(c, repo_dir, command_prefix)
 
+def rename(c : Connection, repo_dir : string, command_prefix = ""):
+     with c.cd(repo_dir):
+        old_file = cli.prompt(">>> Enter file to rename: ")
+        new_file = cli.prompt(">>> Enter new filename: ")
+        command = "git mv {} {}".format(old_file, new_file)
+        Logger().log("Running command '{}'".format(command))
+        c.run(CommandPrefix(command, command_prefix).prefix_command())
+        status(c, repo_dir, command_prefix)
+
 def log(c : Connection, repo_dir : string, logs = "-5", command_prefix = ""):
     with c.cd(repo_dir):
         command = "git log -p {0}".format(logs)
