@@ -147,7 +147,7 @@ def cron_install(c : Connection, magento_root : string, command_prefix=""):
 def run_cron(c : Connection, magento_root : string, command_prefix=""):
         with c.cd(magento_root):
             command = "bin/magento cron:run"
-            Logger().log("Running {}", command)
+            Logger().log("Running command {}".format(command))
             c.run(CommandPrefix(command, command_prefix).prefix_command())
 
 def cat_log(c : Connection, magento_root : string, command_prefix=""):
