@@ -16,7 +16,7 @@ def puts_hide(text) -> string:
     return c.get(text)
 
 def cli_confirm(message):
-    value = confirm("*** {} y/N ".format(message))
-    while value not in ["y", "N"]:
-        value = confirm("*** {} y/N ".format(message))
-    return value  
+    value = confirm("*** {} Y/n ".format(message))
+    while value not in ["Y", "n"]:
+        value = confirm("*** {} Y/n ".format(message))
+    return value.lower()  
