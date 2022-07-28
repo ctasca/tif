@@ -135,11 +135,13 @@ def diff(c : Connection, repo_dir : string, command_prefix = ""):
         Logger().log("Running command '{}'".format(command))
         c.run(CommandPrefix(command, command_prefix).prefix_command())
 
-def file_checkout(c : Connection, repo_dir : string, command_prefix = ""):
+def file_checkout(c : Connection, repo_dir : string, command_prefix = "", remote = True):
     with c.cd(repo_dir):
         status(c, repo_dir, command_prefix)
-        #file = cli.prompt(">>> Enter file to checkout: ")
-        file = Options().file_chooser(c, repo_dir, input_text="Navigate to file to checkout (CTRL+c to abort): ")
+        if remote:
+            file = Options().remote_file_chooser(c, repo_dir, input_text="Navigate to file to checkout (CTRL+c to abort): ")
+        else:
+            file = Options().local_file_chooser(repo_dir, input_text="Navigate to file to checkout (CTRL+c to abort): ")
         if(file):
             command = "git checkout -- {0}".format(file)
             Logger().log("Running command '{}'".format(command))
