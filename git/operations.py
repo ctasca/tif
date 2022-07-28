@@ -3,6 +3,7 @@ from fabric.connection import Connection
 from tif.fabric import cli
 from tif.fabric.logger import Logger
 from tif.fabric.CommandPrefix import CommandPrefix
+from tif.cli.options import Options
 
 def get_remote_url(c: Connection, repo_dir: string, command_prefix=""):
     with c.cd(repo_dir):
@@ -137,7 +138,8 @@ def diff(c : Connection, repo_dir : string, command_prefix = ""):
 def file_checkout(c : Connection, repo_dir : string, command_prefix = ""):
     with c.cd(repo_dir):
         status(c, repo_dir, command_prefix)
-        file = cli.prompt(">>> Enter file to checkout: ")
+        #file = cli.prompt(">>> Enter file to checkout: ")
+        file = Options().file_chooser(c, repo_dir, input_text="Navigate to file to checkout (CTRL+c to abort): ")
         if(file):
             command = "git checkout -- {0}".format(file)
             Logger().log("Running command '{}'".format(command))
