@@ -4,6 +4,7 @@ from fabric.transfer import Transfer
 from tif.fabric import cli
 from tif.fabric.logger import Logger
 from tif.fabric.CommandPrefix import CommandPrefix
+from tif.cli.options import Options
 
 def gunzip(c : Connection , dir : string, listFiles = True, command_prefix = ""):
     with c.cd(dir):
@@ -95,10 +96,7 @@ def put(c : Connection, remote_working_dir = None):
 
 def cat(c : Connection, dir : string, command_prefix=""):
         with c.cd(dir):
-            command = "ls"
-            Logger().log("Running command '{}'".format(command))
-            c.run(CommandPrefix(command, command_prefix).prefix_command(), pty=True)
-            log = cli.prompt(">>> Specify file to cat: ")
-            command = "cat {0}".format(log)
+            file = Options().remote_file_chooser(c, dir, input_text="Navigate to file to cat (CTRL+c to abort): ")
+            command = "cat {0}".format(file.strip())
             Logger().log("Running command '{}'".format(command))
             c.run(CommandPrefix(command, command_prefix).prefix_command(), pty=True)

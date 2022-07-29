@@ -84,7 +84,7 @@ def origin_merge(c : Connection, repo_dir : string, command_prefix = ""):
         if (local_branch and origin_branch):
             confirm = cli.cli_confirm("You are about to merge the origin branch {0} into local branch {1}. Are you sure?".format(origin_branch, local_branch))
             if (confirm == "y"):
-                command = "git merge origin/{0}".format(origin_branch)
+                command = "git merge origin/{0}".format(origin_branch.strip())
                 Logger().log("Running command '{}'".format(command))
                 c.run(CommandPrefix(command, command_prefix).prefix_command(), pty=True)
             else:
