@@ -6,6 +6,7 @@ from tif.fabric import cli
 from tif.fabric.logger import Logger
 from tif.fabric.CommandPrefix import CommandPrefix
 from tif.cli.options import Options
+from python_hosts import Hosts, HostsEntry
 
 def gunzip(c : Connection , dir : string, listFiles = True, command_prefix = ""):
     with c.cd(dir):
@@ -103,3 +104,18 @@ def cat(c : Connection, dir : string, command_prefix=""):
             command = "cat {0}".format(file.strip())
             Logger().log("Running command '{}'".format(command))
             c.run(CommandPrefix(command, command_prefix).prefix_command(), pty=True)
+
+def etc_hosts_add_entry(c : Connection, address : string, names : tuple, entry_type='ipv4', hosts_file='/etc/hosts'):
+    c.run("sudo chmod 766 {}".format(hosts_file), pty=False)
+    hosts = Hosts()
+    new_entry = HostsEntry(entry_type, address= address, names = names)
+    hosts.add([new_entry])
+    hosts.write()
+    c.run("sudo chmod 644 {}".format(hosts_file))
+
+def etc_hosts_remove_entry(c : Connection, address : string, hosts_file='/etc/hosts'):
+    c.run("sudo chmod 766 {}".format(hosts_file), pty=False)
+    hosts = Hosts()
+    hosts.remove_all_matching(address=address)
+    hosts.write()
+    c.run("sudo chmod 644 {}".format(hosts_file))
