@@ -113,6 +113,8 @@ class Options:
 
     def local_directory_chooser(self, dir = None, absolute_path = True, input_text = None, list_all = False):
         options = []
+        if not dir: 
+            return os.curdir
         dir = dir or os.curdir
         dir_list = os.listdir(dir)
         if not list_all:

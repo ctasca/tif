@@ -1,4 +1,5 @@
 import string
+import os
 from fabric.connection import Connection
 from fabric.transfer import Transfer
 from tif.fabric import cli
@@ -77,11 +78,13 @@ def mount_column(c : Connection, dir : string, command_prefix = ""):
         Logger().log("Running command '{}'".format(command))
         c.run(CommandPrefix(command, command_prefix).prefix_command())
 
-def get(c : Connection):
+def get(c : Connection, from_dir : string, to_dir : string):
     t = Transfer(c)
-    remote_file = cli.prompt(">>> Enter remote file path to download (relative to home directory): ")
-    local_file = cli.prompt(">>> Enter local file path to download to (relative to fabfile location): ")
-    t.get(remote_file, local_file)
+    remote_file = Options().remote_file_chooser(c, dir = from_dir, absolute_path=True,input_text="Navigate to file to transfter (CTRL+c to abort): ")
+    local_dir = Options().local_directory_chooser(input_text="Navigate to local directory for the transfter (CTRL+c to abort): ", absolute_path=True)
+    local_fileName = cli.prompt(">>> Enter local file name to be tansferred in {}: ".format(local_dir))
+    t.get(remote_file, local_dir + os.sep + local_fileName)
+    cli.puts(".:~ Done!")
 
 def put(c : Connection, remote_working_dir = None):
     local_file = cli.prompt(">>> Enter local file path to upload (relative to fabfile location): ")
