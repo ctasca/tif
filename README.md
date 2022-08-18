@@ -2,3 +2,393 @@
 ## Dependencies
 - Fabric 2: https://www.fabfile.org/
 - Python Hosts: https://pypi.org/project/python-hosts/
+### fabfile.py example
+
+<pre>
+<code>
+from fabric.connection import *
+from fabric.tasks import *
+from tif.fabric import cli
+from tif.git import operations as git
+from tif.sql import operations as sql
+from tif.files import operations as files
+from tif.composer import operations as composer
+from tif.bin import magento
+
+host = ""
+user = ""
+home_dir = ""
+magento_root = ""
+local_magento_root = ""
+repo = ""
+
+c = Connection(host, user=user)
+
+# ------------------------------------------------------------
+# Remote tasks
+# ------------------------------------------------------------
+
+@task
+def ls(context):
+    """
+    Remotely list directory content
+    """
+    files.ls_dir(c, magento_root)
+
+@task
+def listCommands(context):
+    """
+    Remotely list bin/magento avaialable commands
+    """
+    magento.list_commands(c, magento_root)
+
+@task
+def cloneRepo(context):
+    """
+    Remotely clones magento repository
+    """
+    git.clone_repo(c, magento_root, repo)
+
+@task
+def switchBranch(context):
+    """
+    Remotely switch git branch (git checkout)
+    """
+    git.switch_branch(c, magento_root)
+
+@task
+def gb(context):
+    """
+    Remotely execute git branch command
+    """
+    git.branch(c, magento_root)
+
+@task
+def gmerge(context):
+    """
+    Remotely execute git merge origin/<branch> command. Before fetch is executed
+    """
+    git.origin_merge(c, magento_root)
+
+@task
+def importDb(context):
+    """
+    Remotely import database dump
+    """
+    sql.import_db(c, home_dir)
+
+@task
+def gunzip(context):
+    """
+    Remotely execute gunzip command
+    """
+    files.gunzip(c, home_dir)
+
+@task
+def composerInstall(context):
+    """
+    Remotely execute composer install command
+    """
+    composer.install(c, magento_root)
+
+@task
+def installMagento(context):
+    """
+    Remotely execute bin/magento setup:install command
+    """
+    magento.install(c, magento_root)
+
+@task
+def runCronGroup(context):
+    """
+    Remotely execute bin/magento cron:run --group <group> command
+    """
+    magento.run_cron_group(c, magento_root)
+
+@task
+def runCron(context):
+    """
+    Remotely execute bin/magento cron:run command
+    """
+    magento.run_cron(c, magento_root)
+
+@task
+def catLog(context):
+    """
+    CD into var/log directory and prompt for log file to cat
+    """
+    magento.cat_log(c, magento_root)
+
+
+@task
+def command(context):
+    """
+    Remotely execute bin/magento command (command to be entered in prompt)
+    """
+    magento.run(c, magento_root)
+
+@task
+def rmGenerated(context):
+    """
+    Remotely delete magento generated directory
+    """
+    magento.delete_generated(c, magento_root)
+
+@task
+def diCompile(context):
+    """
+    Remotely execute bin/magento setup:di:compile command
+    """
+    magento.di_compile(c, magento_root)
+
+@task
+def moduleEnable(context):
+    """
+    Remotely execute bin/magento module:enable command
+    """
+    magento.module_enable(c, magento_root)
+
+@task
+def setupUpgrade(context):
+    """
+    Remotely execute bin/magento setup:upgrade command
+    """
+    magento.setup_upgrade(c, magento_root)
+
+@task
+def fetch(context):
+    """
+    Remotely execute git fetch command
+    """
+    git.fetch(c, magento_root)
+
+@task
+def pull(context):
+    """
+    Remotely execute git pull branch from origin command. Automatically detects branch to pull.
+    """
+    git.pull(c, magento_root)
+
+@task
+def pullBranch(context):
+    """
+    Remotely execute git pull branch from origin command. Prompts for branch to pull from origin.
+    """
+    git.pull_branch(c, magento_root)
+
+@task
+def cc(context):
+    """
+    Remotely execute bin/magento cache:clean command
+    """
+    magento.cache_clean(c, magento_root)
+
+@task
+def cf(context):
+    """
+    Remotely execute bin/magento cache:flush command
+    """
+    magento.cache_flush(c, magento_root)
+
+@task
+def th(context):
+    """
+    Remotely execute bin/magento dev:template-hints enable/disable command
+    """
+    magento.template_hints(c, magento_root)
+
+@task
+def whitelist(context):
+    """
+    Remotely execute bin/magento setup:db-declaration:generate-whitelist --module-name command
+    """
+    magento.generate_whitelist(c, magento_root)
+
+@task
+def gs(context):
+    """
+    Remotely execute git status
+    """
+    git.status(c, magento_root)
+
+@task
+def diff(context):
+    """
+    Remotely execute git diff command
+    """
+    git.diff(c, magento_root)
+
+@task
+def checkoutF(context):
+    """
+    Remotely execute git checkout -- <file> command
+    """
+    git.file_checkout(c, magento_root)
+
+@task
+def gai(context):
+    """
+    Remotely execute git add -i command
+    """
+    git.add_iteractive(c, magento_root)
+
+@task
+def gc(context):
+    """
+    Remotely execute git commit command
+    """
+    git.commit(c, magento_root)
+
+@task
+def gp(context):
+    """
+    Remotely execute git push origin command
+    """
+    git.push(c, magento_root)
+
+@task
+def greset(context):
+    """
+    Remotely execute git reset --hard HEAD command
+    """
+    git.reset_head(c, magento_root)
+
+@task
+def grm(context):
+    """
+    Remotely execute recursively git rm <file>
+    """
+    git.remove(c, magento_root)
+
+@task
+def gl(context, logs = "-5"):
+    """
+    Remotely execute git log. Expect parameter 'logs' for -p parameter. Default -5.
+    """
+    git.log(c, magento_root, logs)
+
+@task
+def rm(context):
+    """
+    Remotely execute rm command for a file or directory
+    """
+    files.rm(c, magento_root)
+
+@task
+def get(context):
+    """
+    Remotely execute file transfer to local file system
+    """
+    files.get(c)
+
+# ------------------------------------------------------------
+# Local tasks. All start with "l"
+# ------------------------------------------------------------
+
+@task
+def lCloneRepo(context):
+    """
+    Locally execute git clone command
+    """
+    git.clone_repo(context, local_magento_root, repo)
+
+@task
+def lSwitchBranch(context):
+    """
+    Locally switch git branch (git checkout)
+    """
+    git.switch_branch(context, local_magento_root)
+
+@task
+def lgnb(context):
+    """
+    Locally creates new branch
+    """
+    git.new_branch(context, local_magento_root)
+
+@task
+def lgai(context):
+    """
+    Locally execute git add -i command
+    """
+    git.add_iteractive(context, local_magento_root)
+
+@task
+def lstash(context):
+    """
+    Locally execute git stash command
+    """
+    git.stash(context, local_magento_root)
+
+@task
+def lstashp(context):
+    """
+    Locally execute git stash pop command
+    """
+    git.stash_pop(context, local_magento_root)
+
+@task
+def lstashd(context):
+    """
+    Locally execute git stash drop command
+    """
+    git.stash_drop(context, local_magento_root)
+
+@task
+def lstashl(context):
+    """
+    Locally execute git stash list command
+    """
+    git.stash_list(context, local_magento_root)
+
+@task
+def lpull(context):
+    """
+    Locally execute git pull branch from origin command. Automatically detects branch to pull.
+
+    """
+    git.pull(context, local_magento_root)
+
+@task
+def lPullBranch(context):
+    """
+    Locally execute git pull branch from origin command. Prompts for branch to pull from origin.
+    """
+    git.pull_branch(c, magento_root)
+
+@task
+def lgp(context):
+    """
+    Locally execute git push origin command
+    """
+    git.push(context, local_magento_root)
+
+@task
+def lgs(context):
+    """
+    Locally execute git status
+    """
+    git.status(context, local_magento_root)
+
+@task
+def lgl(context, logs = "-5"):
+    """
+    Locally execute git log. Expect parameter 'logs' for -p parameter. Default -5.
+    """
+    git.log(context, local_magento_root, logs)
+
+@task
+def lfetch(context):
+    """
+    Locally execute git fetch command
+    """
+    git.fetch(context, local_magento_root)
+
+@task
+def lgmerge(context):
+    """
+    Locally execute git merge origin/<branch> command. Before fetch is executed
+    """
+    git.origin_merge(context, magento_root)
+</code>
+</pre>
