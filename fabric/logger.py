@@ -1,3 +1,4 @@
+import emoji
 from tif.fabric import cli
 
 class Logger:
@@ -8,4 +9,4 @@ class Logger:
         """
         Outputs white message to console
         """
-        cli.puts("** {}".format(message))
+        cli.puts("** {} {}".format(emoji.emojize(':bell:'), message))

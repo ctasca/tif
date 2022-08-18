@@ -1,4 +1,5 @@
 import re
+import emoji
 
 def _wrap_with(code):
     def inner(text, bold=False):
@@ -21,16 +22,16 @@ class Colors:
             pass
         def get(self, text):
             if re.match(r'^\>\>\>', text):
-                return cyan(text)
+                return cyan(text[4:])
             if re.match(r'^\*\*\s', text):
-                return white(text)
+                return white(text[3:])
             if re.match(r'^\*\*\*', text):
-                return yellow(text)
+                return yellow(text[4:])
             if re.match(r'^\[\d{1,}\]', text):
                 return yellow(text)
             if re.match(r'^\!\!\!', text):
-                return red(text)
+                return red(text[4:])
             if re.match(r'^\!\!\s', text):
-                return blue(text)
+                return blue(text[3:])
             if re.match(r'^\.:\~', text):
-                return green(text)
+                return green(emoji.emojize(':beaming_face_with_smiling_eyes:') + text[3:])
