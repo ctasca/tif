@@ -354,7 +354,7 @@ def lPullBranch(context):
     """
     Locally execute git pull branch from origin command. Prompts for branch to pull from origin.
     """
-    git.pull_branch(c, magento_root)
+    git.pull_branch(context, magento_root)
 
 @task
 def lgp(context):
