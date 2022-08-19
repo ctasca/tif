@@ -11,19 +11,16 @@ For example on MAC OS sites-packages directory would be found in /Users/xxxxx/Li
 
 ## Remote task output example
 - Defined in project's fabfile.py file
-<pre>
-<code>
+```python
 @task
 def rmGenerated(context):
     """
     Remotely delete magento generated directory
     """
     magento.delete_generated(c, magento_root)
-</code>
-</pre>
+```
 - Defined in tif package bin/magento.py
-<pre>
-<code>
+```python
 def delete_generated(c : Connection, magento_root : string, command_prefix=""):
     with c.cd(magento_root):
         confirm = cli.cli_confirm("You are about to empty the generated directory, Are you sure?")
@@ -34,14 +31,12 @@ def delete_generated(c : Connection, magento_root : string, command_prefix=""):
             cli.puts(".:~ Done")
         else:
             cli.puts("!!! Aborted")
-</code>
-</pre>
+```
 
 ![Screenshot 2022-08-19 at 11 48 25](https://user-images.githubusercontent.com/1621171/185595530-bfb85ffc-97bc-4cf2-a88a-a7d5a34c485a.png)
 
 ## fabfile.py example
-<pre>
-<code>
+```python
 from fabric.connection import *
 from fabric.tasks import *
 from tif.fabric import cli
@@ -426,5 +421,4 @@ def lgmerge(context):
     Locally execute git merge origin/<branch> command. Before fetch is executed
     """
     git.origin_merge(context, magento_root)
-</code>
-</pre>
+```
