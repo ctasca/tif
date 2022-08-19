@@ -2,6 +2,7 @@
 
 ## Dependencies
 - Fabric 2: https://www.fabfile.org/
+- Docker SDK for Python: https://docker-py.readthedocs.io/en/stable/index.html
 - Python Hosts: https://pypi.org/project/python-hosts/
 - Emoji: https://pypi.org/project/emoji/
 
