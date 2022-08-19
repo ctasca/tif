@@ -3,6 +3,7 @@
 ## Dependencies
 - Fabric 2: https://www.fabfile.org/
 - Python Hosts: https://pypi.org/project/python-hosts/
+- Emoji: https://pypi.org/project/emoji/
 
 ## Installation
 Clone the repository in your python installation site-packages directory.</br>
