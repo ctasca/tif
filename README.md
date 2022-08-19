@@ -7,7 +7,7 @@
 
 ## Installation
 Clone the repository in your python installation site-packages directory.</br>
-For example on MAC OS sites-packages directory would be found in /Users/xxxxx/Library/Python/3.8/lib/python/site-packages.
+For example on MAC OS sites-packages directory would be found in /Users/xxxxx/Library/Python/x.x/lib/python/site-packages.
 
 ### fabfile.py example
 <pre>
