@@ -30,8 +30,8 @@ class Colors:
             if re.match(r'^\[\d{1,}\]', text):
                 return yellow(text)
             if re.match(r'^\!\!\!', text):
-                return red(text[4:])
+                return red(emoji.emojize(':bell_with_slash:') + text[3:])
             if re.match(r'^\!\!\s', text):
                 return blue(text[3:])
             if re.match(r'^\.:\~', text):
-                return green(emoji.emojize(':beaming_face_with_smiling_eyes:') + text[3:])
+                return green(emoji.emojize(':OK_button:') + text[3:])
