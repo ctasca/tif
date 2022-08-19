@@ -10,6 +10,33 @@ Clone the repository in your python installation site-packages directory.</br>
 For example on MAC OS sites-packages directory would be found in /Users/xxxxx/Library/Python/x.x/lib/python/site-packages.
 
 ## Remote task output example
+- Defined in project's fabfile.py file
+<pre>
+<code>
+@task
+def rmGenerated(context):
+    """
+    Remotely delete magento generated directory
+    """
+    magento.delete_generated(c, magento_root)
+</code>
+</pre>
+- Defined in tif package bin/magento.py
+<pre>
+<code>
+def delete_generated(c : Connection, magento_root : string, command_prefix=""):
+    with c.cd(magento_root):
+        confirm = cli.cli_confirm("You are about to empty the generated directory, Are you sure?")
+        if (confirm == "y"):
+            command = "rm -rf generated/*"
+            Logger().log("Running command '{}'".format(command))
+            c.run(CommandPrefix(command, command_prefix).prefix_command())
+            cli.puts(".:~ Done")
+        else:
+            cli.puts("!!! Aborted")
+</code>
+</pre>
+
 ![Screenshot 2022-08-19 at 11 48 25](https://user-images.githubusercontent.com/1621171/185595530-bfb85ffc-97bc-4cf2-a88a-a7d5a34c485a.png)
 
 ## fabfile.py example
