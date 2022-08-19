@@ -7,6 +7,7 @@
 - Emoji: https://pypi.org/project/emoji/
 
 ## Installation
+Make sure you have installed all the dependency packages on your system.</br>
 Clone the repository in your python installation site-packages directory.</br>
 For example on MAC OS sites-packages directory would be found in /Users/xxxxx/Library/Python/x.x/lib/python/site-packages.
 
