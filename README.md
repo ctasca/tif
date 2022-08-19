@@ -9,7 +9,10 @@
 Clone the repository in your python installation site-packages directory.</br>
 For example on MAC OS sites-packages directory would be found in /Users/xxxxx/Library/Python/x.x/lib/python/site-packages.
 
-### fabfile.py example
+## Remote task output example
+![Screenshot 2022-08-19 at 11 48 25](https://user-images.githubusercontent.com/1621171/185595530-bfb85ffc-97bc-4cf2-a88a-a7d5a34c485a.png)
+
+## fabfile.py example
 <pre>
 <code>
 from fabric.connection import *
