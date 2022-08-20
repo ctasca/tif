@@ -3,6 +3,7 @@ import docker
 import re
 from invoke import run
 from tif.fabric import cli
+from tif.fabric.logger import Logger
 
 class Service:
     def __init__(self, docker_dir : string) -> None:
@@ -41,6 +42,8 @@ class Service:
 
     def command(self, container : string, command : string):
         """
-        Runs command on a docker container
+        Returns formatted command to execute on a docker container
         """
-        return "cd {} & docker exec -it {} bash -c \"{}\"".format(self.docker_dir, container, command)
+        command = "docker exec -it {} bash -c \"{}\"".format(container, command)
+        Logger().log("Running command '{}'".format(command))
+        return command
