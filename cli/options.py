@@ -225,6 +225,7 @@ class Options:
                 cli.puts("!!! Not a valid choice")
                 exit()
         elif (self.options[option].lower() == 'exit'):
+            cli.puts("!!! Exited")
             exit()
         else:
             if confirm_prompt:
