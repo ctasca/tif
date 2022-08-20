@@ -64,6 +64,12 @@ def exec(self, options, command = None, confirm_prompt = True):
             command = cli.prompt(">>> Enter command to execute: ")
         command = self.command(container_choice, command.strip())
         run(command, pty=True)
+        
+def command(self, container : string, command : string):
+        """
+        Execute command on a docker container
+        """
+        return "cd {} & docker exec -it {} bash -c \"{}\"".format(self.docker_dir, container, command)
 ```
 
 ![Screenshot_2022-08-20_at_15_57_16](https://user-images.githubusercontent.com/1621171/185750140-46b4ecf5-fc52-451d-9313-f45bc6494297.png)
