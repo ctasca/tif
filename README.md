@@ -74,6 +74,28 @@ def command(self, container : string, command : string):
 
 ![Screenshot_2022-08-20_at_15_57_16](https://user-images.githubusercontent.com/1621171/185750140-46b4ecf5-fc52-451d-9313-f45bc6494297.png)
 
+Alternatively define a specific task in a project's fabfile.py
+
+```python
+
+from tif.docker.service import *
+
+docker_services = Service(docker_root)
+php_fpm_container_name = docker_services.container_name_search("php-fpm")
+
+@task
+def lcf(context):
+    """
+    Execute bin/magento cache flush command in php-fpm docker container
+    """
+    command = docker_services.command(php_fpm_container_name, "bin/magento c:f")
+    run(command, pty=True)
+
+```
+
+![Screenshot_2022-08-20_at_16_46_33](https://user-images.githubusercontent.com/1621171/185752611-7bb6b314-a696-4b78-9c26-300e5816d955.png)
+
+
 ## Running a Fabric task from a list of connections
 
 ![Screenshot_2022-08-20_at_16_35_31](https://user-images.githubusercontent.com/1621171/185751919-e261e941-531e-4413-8ef2-a073af0c64d2.png)
