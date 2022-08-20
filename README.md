@@ -52,7 +52,7 @@ def dockerExec(context, confirm = False):
     docker_services.exec(Options(), confirm_prompt=confirm)
 ```
 
-- Defined in tif package docker/service.py
+- Defined in tif package docker/service.py Service class
 
 ```python
 def exec(self, options, command = None, confirm_prompt = True):
