@@ -1,5 +1,8 @@
 # The Innovation Factory Python Package
 
+## Python version
+Python 3.8.9
+
 ## Dependencies
 - Fabric 2: https://www.fabfile.org/
 - Docker SDK for Python: https://pypi.org/project/docker/ https://docker-py.readthedocs.io/en/stable/index.html
