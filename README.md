@@ -74,6 +74,11 @@ def command(self, container : string, command : string):
 
 ![Screenshot_2022-08-20_at_15_57_16](https://user-images.githubusercontent.com/1621171/185750140-46b4ecf5-fc52-451d-9313-f45bc6494297.png)
 
+## Running a Fabric task from a list of connections
+
+![Screenshot_2022-08-20_at_16_35_31](https://user-images.githubusercontent.com/1621171/185751919-e261e941-531e-4413-8ef2-a073af0c64d2.png)
+
+
 ## fabfile.py example
 ```python
 from fabric.connection import *
