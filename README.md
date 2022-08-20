@@ -40,6 +40,34 @@ def delete_generated(c : Connection, magento_root : string, command_prefix=""):
 
 ![Screenshot 2022-08-19 at 11 48 25](https://user-images.githubusercontent.com/1621171/185595530-bfb85ffc-97bc-4cf2-a88a-a7d5a34c485a.png)
 
+## Docker exec command on a running container
+- Defined in project's fabfile.py file
+
+```python
+@task
+def dockerExec(context, confirm = False):
+    """
+    Execute a given command in chosen docker container
+    """
+    docker_services.exec(Options(), confirm_prompt=confirm)
+```
+
+- Defined in tif package docker/service.py
+
+```python
+def exec(self, options, command = None, confirm_prompt = True):
+        """
+        Exec a command in chosen container. Expect Options object from tif.cli.options module
+        """
+        container_choice = options.docker_container_chooser(self, confirm_prompt=confirm_prompt)
+        if not command:
+            command = cli.prompt(">>> Enter command to execute: ")
+        command = self.command(container_choice, command.strip())
+        run(command, pty=True)
+```
+
+![Screenshot_2022-08-20_at_15_57_16](https://user-images.githubusercontent.com/1621171/185750140-46b4ecf5-fc52-451d-9313-f45bc6494297.png)
+
 ## fabfile.py example
 ```python
 from fabric.connection import *
