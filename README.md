@@ -44,6 +44,11 @@ def delete_generated(c : Connection, magento_root : string, command_prefix=""):
 - Defined in project's fabfile.py file
 
 ```python
+from tif.docker.service import *
+from tif.cli.options import Options
+
+docker_services = Service(docker_root)
+
 @task
 def dockerExec(context, confirm = False):
     """
