@@ -77,7 +77,7 @@ def command(self, container : string, command : string):
 Alternatively define a specific task in a project's fabfile.py
 
 ```python
-
+from invoke import run
 from tif.docker.service import *
 
 docker_services = Service(docker_root)
