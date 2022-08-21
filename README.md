@@ -77,6 +77,16 @@ def command(self, container : string, command : string):
         return "docker exec -it {} bash -c \"{}\"".format(container, command)
 ```
 
+- Defined in tif.cli.options module Options class
+
+```python
+def docker_container_chooser(self, service : Service, confirm_prompt = True) -> string:
+        containers = service.containers_dictionary()
+        containers[str(len(containers) + 1)] = "Exit"
+        self.options = containers
+        return self.render(input_text="Choose a container: ", confirm_prompt=confirm_prompt)
+```
+
 ![Screenshot_2022-08-20_at_15_57_16](https://user-images.githubusercontent.com/1621171/185750140-46b4ecf5-fc52-451d-9313-f45bc6494297.png)
 
 Alternatively define a specific task in a project's fabfile.py
