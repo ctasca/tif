@@ -77,7 +77,7 @@ def command(self, container : string, command : string):
         return "docker exec -it {} bash -c \"{}\"".format(container, command)
 ```
 
-- Defined in tif.cli.options module Options class
+- Defined in tif package cli/options.py module Options class
 
 ```python
 def docker_container_chooser(self, service : Service, confirm_prompt = True) -> string:
