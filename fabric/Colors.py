@@ -31,7 +31,9 @@ class Colors:
                 return yellow(text)
             if re.match(r'^\!\!\!', text):
                 return red(emoji.emojize(':bell_with_slash:') + text[3:])
+            if re.match(r'^error:', text):
+                return red(text[7:])
             if re.match(r'^\!\!\s', text):
                 return blue(text[3:])
             if re.match(r'^\.:\~', text):
-                return green(emoji.emojize(':OK_button:') + text[3:])
+                return green(emoji.emojize(':check_box_with_check:') + " " + text[3:])

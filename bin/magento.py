@@ -102,6 +102,14 @@ def setup_upgrade(c : Connection, magento_root : string, command_prefix=""):
         Logger().log("Running command '{}'".format(command))
         c.run(CommandPrefix(command, command_prefix).prefix_command())
 
+def setup_static_content_deploy(c : Connection, magento_root : string, options : None, command_prefix = ""):
+    with c.cd(magento_root):
+        command = "bin/magento setup:static-content:deploy"
+        if options:
+            command = "bin/magento setup:static-content:deploy {}".format(options)
+        Logger().log("Running command '{}'".format(command))
+        c.run(CommandPrefix(command, command_prefix).prefix_command())
+
 def cache_clean(c : Connection, magento_root : string, command_prefix=""):
     with c.cd(magento_root):
         command = "bin/magento cache:clean"
@@ -163,5 +171,11 @@ def cat_log(c : Connection, magento_root : string, command_prefix=""):
 def admin_user_create(c: Connection, magento_root : string, command_prefix=""):
     with c.cd(magento_root):
         command = "bin/magento admin:user:create"
+        Logger().log("Running command '{}'".format(command))
+        c.run(CommandPrefix(command, command_prefix).prefix_command(), pty=True)
+
+def enable_maintenance_mode(c : Connection, magento_root : string, command_prefix=""):
+    with c.cd(magento_root):
+        command = "bin/magento maintenance:enable"
         Logger().log("Running command '{}'".format(command))
         c.run(CommandPrefix(command, command_prefix).prefix_command(), pty=True)

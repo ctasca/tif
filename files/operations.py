@@ -28,6 +28,52 @@ def ls(c : Connection, dir : string, command_prefix = ""):
         Logger().log("Running command '{}'".format(command))
         c.run(CommandPrefix(command, command_prefix).prefix_command())
 
+def mv(c : Connection, dir : string, filename : string, mv_filename : string, command_prefix = ""):
+     with c.cd(dir):
+        command = "mv {} {}".format(filename, mv_filename)
+        Logger().log("Running command '{}'".format(command))
+        c.run(CommandPrefix(command, command_prefix).prefix_command())
+
+def rsync(c : Connection, dir : string, command : string, command_prefix = ""):
+    with c.cd(dir):
+        Logger().log("Running command '{}'".format(command))
+        c.run(CommandPrefix(command, command_prefix).prefix_command())
+
+def mount(c : Connection, command : string, command_prefix = ""):
+    Logger().log("Running command '{}'".format(command))
+    c.run(CommandPrefix(command, command_prefix).prefix_command())
+
+def dfh(c : Connection, dir : string, command_prefix = ""):
+    with c.cd(dir):
+        command = "df -h"
+        Logger().log("Running command '{}'".format(command))
+        c.run(CommandPrefix(command, command_prefix).prefix_command())
+
+def grep(c : Connection, dir : string, command : string, search : string, command_prefix = "") -> int:
+    with c.cd(dir):
+        command = "{} | grep -q '{}'".format(command, search)
+        Logger().log("Running command '{}'".format(command))
+        result = c.run(CommandPrefix(command, command_prefix).prefix_command(), hide=True, warn=True)
+        return result.return_code
+
+
+def mkdir(c : Connection, dir : string, command_prefix = ""):
+    with c.cd(dir):
+        curr_dir = c.run("pwd")
+        new_dir = cli.prompt(">>> Enter directory to create in {} directory: ".format(curr_dir.stdout.strip()))
+        if (new_dir):
+            command = "mkdir {}".format(new_dir)
+            Logger().log("Running command '{}'".format(command))
+            c.run(CommandPrefix(command, command_prefix).prefix_command())
+        else:
+            cli.puts("!!! Aborted")
+
+def ls_tmp(c : Connection, command_prefix = ""):
+    with c.cd("/tmp"):
+        command = "ls -la"
+        Logger().log("Running command '{}'".format(command))
+        c.run(CommandPrefix(command, command_prefix).prefix_command())
+
 def rm(c : Connection, dir : string, command_prefix = ""):
     with c.cd(dir):
         command = "ls"
@@ -37,7 +83,7 @@ def rm(c : Connection, dir : string, command_prefix = ""):
         if c.run(CommandPrefix('test -d {0}'.format(to_delete), command_prefix).prefix_command(), warn=True):
             confirm = cli.cli_confirm("You are about to delete the directory {0}. Are you sure?".format(to_delete))
             if (confirm == "y"):
-                command = "rm -rf {0}".format(to_delete)
+                command = "rm -rf {0}".format(to_delete.strip())
                 Logger().log("Running command '{}'".format(command))
                 c.run(CommandPrefix(command, command_prefix).prefix_command())
             else:
@@ -45,7 +91,7 @@ def rm(c : Connection, dir : string, command_prefix = ""):
         elif c.run(CommandPrefix('test -f {0}'.format(to_delete), command_prefix).prefix_command(), warn=True):
             confirm = cli.cli_confirm("You are about to delete the file {0}. Are you sure?".format(to_delete))
             if (confirm == "y"):
-                command = "rm {0}".format(to_delete)
+                command = "rm -f {}".format(to_delete.strip())
                 Logger().log("Running command '{}'".format(command))
                 c.run(CommandPrefix(command, command_prefix).prefix_command())
             else:
@@ -53,9 +99,18 @@ def rm(c : Connection, dir : string, command_prefix = ""):
         else:
             cli.puts("!!! Aborted operation. {0} not found.".format(to_delete))
 
+def vim(c : Connection, dir : string, command_prefix = ""):
+    with c.cd(dir):
+        file = cli.prompt(">>> Enter file to edit in vim: ")
+        command = "vim {}".format(file.strip())
+        Logger().log("Running command '{}'".format(command))
+        c.run(CommandPrefix(command, command_prefix).prefix_command(), pty=True)
 
-def ls_dir(c : Connection, dir : string, command_prefix = ""):
-    ls_dir = cli.prompt(">>> Enter directory to list: ")
+def ls_dir(c : Connection, dir : string, command_prefix = "", prompt_for_dir = True):
+    if (prompt_for_dir):
+        ls_dir = cli.prompt(">>> Enter directory to list: ")
+    else:
+        ls_dir = ""
     with c.cd(dir + "/" + ls_dir):
         command = "ls -la"
         Logger().log("Running command '{}'".format(command))
