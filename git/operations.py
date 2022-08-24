@@ -63,13 +63,13 @@ def current_branch(c : Connection, repo_dir : string, command_prefix = "") -> st
         branch = c.run(CommandPrefix(command, command_prefix).prefix_command(), hide=True)
         return branch.stdout.strip()
 
-def pull(c : Connection, repo_dir : string, command_prefix = "", oauth2_url = None):
+def pull(c : Connection, repo_dir : string,command_prefix = "", oauth2_url = None):
     with c.cd(repo_dir):
         branch = current_branch(c, repo_dir, command_prefix)
         confirm = cli.cli_confirm("You are about to pull the remote branch {}. Are you sure?".format(branch))
         if (confirm == "y"):
             if oauth2_url:
-                command = "git pull {}".format(oauth2_url)
+                command = "git pull {} {}".format(oauth2_url, branch)
             else:
                 command = "git pull origin {}".format(branch)
             Logger().log("Running command '{}'".format(command))
