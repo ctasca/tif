@@ -160,6 +160,12 @@ def cat(c : Connection, dir : string, command_prefix=""):
             Logger().log("Running command '{}'".format(command))
             c.run(CommandPrefix(command, command_prefix).prefix_command(), pty=True)
 
+def set_files_permissions(c : Connection, dir : string, path : string, chmode : string, command_prefix=""):
+    with c.cd(dir):
+        command = "sudo -s find {} -type d -exec chmod {} {{}} \;".format(path, chmode)
+        Logger().log("Running command '{}'".format(command))
+        c.run(CommandPrefix(command, command_prefix).prefix_command(), pty=True)
+
 def etc_hosts_add_entry(c : Connection, address : string, names : tuple, entry_type='ipv4', hosts_file='/etc/hosts'):
     command = "sudo chmod 766 {}".format(hosts_file)
     Logger().log("Running command '{}'".format(command))
