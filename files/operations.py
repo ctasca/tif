@@ -111,7 +111,7 @@ def ls_dir(c : Connection, dir : string, command_prefix = "", prompt_for_dir = T
         ls_dir = cli.prompt(">>> Enter directory to list: ")
     else:
         ls_dir = ""
-    with c.cd(dir + "/" + ls_dir):
+    with c.cd(dir + "/" + ls_dir.strip()):
         command = "ls -la"
         Logger().log("Running command '{}'".format(command))
         c.run(CommandPrefix(command, command_prefix).prefix_command())
@@ -160,11 +160,32 @@ def cat(c : Connection, dir : string, command_prefix=""):
             Logger().log("Running command '{}'".format(command))
             c.run(CommandPrefix(command, command_prefix).prefix_command(), pty=True)
 
-def set_files_permissions(c : Connection, dir : string, path : string, chmode : string, command_prefix=""):
+def cat_file(c : Connection, dir : string, file : string, command_prefix=""):
+        with c.cd(dir):
+            command = "cat {0}".format(file.strip())
+            Logger().log("Running command '{}'".format(command))
+            c.run(CommandPrefix(command, command_prefix).prefix_command(), pty=True)
+
+def cat_tmp_file(c : Connection, command_prefix=""):
+        with c.cd("/tmp"):
+            ls_tmp(c, command_prefix=command_prefix)
+            file = cli.prompt(">>> Enter file to cat: ")
+            command = "cat {0}".format(file.strip())
+            Logger().log("Running command '{}'".format(command))
+            c.run(CommandPrefix(command, command_prefix).prefix_command(), pty=True)
+
+
+def set_files_permissions(c : Connection, dir : string, path : string, chmod : string, command_prefix = ""):
     with c.cd(dir):
-        command = "sudo -s find {} -type d -exec chmod {} {{}} \;".format(path, chmode)
+        command = "sudo -s && find {} -type d -exec chmod {} {{}} \;".format(path, chmod)
         Logger().log("Running command '{}'".format(command))
         c.run(CommandPrefix(command, command_prefix).prefix_command(), pty=True)
+
+def chown(c : Connection, dir : string, owner : string, group : string, file : string, command_prefix = ""):
+    with c.cd(dir):
+        command = "chown {}:{} {}".format(owner, group, file)
+        Logger().log("Running command '{}'".format(command))
+        c.run(CommandPrefix(command, command_prefix).prefix_command())
 
 def etc_hosts_add_entry(c : Connection, address : string, names : tuple, entry_type='ipv4', hosts_file='/etc/hosts'):
     command = "sudo chmod 766 {}".format(hosts_file)
