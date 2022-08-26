@@ -19,7 +19,7 @@ def get_remote_url(c: Connection, repo_dir: string, command_prefix=""):
 
 def clone_repo(c : Connection, clone_dir: string, repo: string, command_prefix = ""):
     with c.cd(clone_dir):
-        command = "git clone {0} .".format(repo)
+        command = "git clone {} .".format(repo)
         Logger().log("Running command '{}'".format(command))
         c.run(CommandPrefix(command, command_prefix).prefix_command(), pty=True)
 
@@ -28,7 +28,7 @@ def switch_branch(c: Connection, repo_dir: string, command_prefix = ""):
         branch(c, repo_dir, command_prefix)
         sbranch = cli.prompt(">>> Enter branch to switch to: ")
         if (sbranch):
-            command = "git checkout {0}".format(sbranch)
+            command = "git checkout {}".format(sbranch)
             Logger().log("Running command '{}'".format(command))
             c.run(CommandPrefix(command, command_prefix).prefix_command())
         else:
@@ -36,7 +36,7 @@ def switch_branch(c: Connection, repo_dir: string, command_prefix = ""):
 
 def switch_to_branch(c: Connection, repo_dir: string, branch : string, command_prefix = ""):
     with c.cd(repo_dir):
-        command = "git checkout {0}".format(branch)
+        command = "git checkout {}".format(branch)
         Logger().log("Running command '{}'".format(command))
         c.run(CommandPrefix(command, command_prefix).prefix_command())
 
@@ -44,7 +44,7 @@ def new_branch(c: Connection, repo_dir: string, command_prefix = ""):
     with c.cd(repo_dir):
         new_branch = cli.prompt(">>> Enter new branch name: ")
         if (new_branch):
-            command = "git checkout -b {0}".format(new_branch)
+            command = "git checkout -b {}".format(new_branch)
             Logger().log("Running command '{}'".format(command))
             c.run(CommandPrefix(command, command_prefix).prefix_command())
         else:
@@ -99,7 +99,7 @@ def origin_merge(c : Connection, repo_dir : string, command_prefix = ""):
         if (local_branch and origin_branch):
             confirm = cli.cli_confirm("You are about to merge the origin branch {} into local branch {}. Are you sure?".format(origin_branch, local_branch))
             if (confirm == "y"):
-                command = "git merge origin/{0}".format(origin_branch.strip())
+                command = "git merge origin/{}".format(origin_branch.strip())
                 Logger().log("Running command '{}'".format(command))
                 c.run(CommandPrefix(command, command_prefix).prefix_command(), pty=True)
             else:
@@ -123,7 +123,7 @@ def force_push(c : Connection, repo_dir : string, command_prefix = ""):
         branch = current_branch(c, repo_dir, command_prefix)
         confirm = cli.cli_confirm("You are about to force push to origin branch {}. Are you sure?".format(branch))
         if (confirm == "y"):
-            command = "git push -f origin {0}".format(branch)
+            command = "git push -f origin {}".format(branch)
             Logger().log("Running command '{}'".format(command))
             c.run(CommandPrefix(command, command_prefix).prefix_command(), pty=True)
         else:

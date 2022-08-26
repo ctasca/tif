@@ -14,13 +14,13 @@ def run(c : Connection, magento_root: string, command_prefix=""):
     with c.cd(magento_root):
         list_commands(c, magento_root, command_prefix)
         command = cli.prompt(">>> Enter bin/magento command to run: ")
-        command = "bin/magento {0}".format(command)
+        command = "bin/magento {}".format(command)
         Logger().log("Running command '{}'".format(command))
         c.run(CommandPrefix(command, command_prefix).prefix_command())
 
 def run_command(c : Connection, magento_root: string, command: string, command_prefix=""):
     with c.cd(magento_root):
-        command = "bin/magento {0}".format(command)
+        command = "bin/magento {}".format(command)
         Logger().log("Running command '{}'".format(command))
         c.run(CommandPrefix(command, command_prefix).prefix_command())
 
@@ -90,7 +90,7 @@ def module_enable(c : Connection, magento_root : string, command_prefix=""):
     with c.cd(magento_root):
         module = cli.prompt(">>> Enter module to enable: ")
         if (module):
-            command = "bin/magento module:enable {0}".format(module)
+            command = "bin/magento module:enable {}".format(module)
             Logger().log("Running command '{}'".format(command))
             c.run(CommandPrefix(command, command_prefix).prefix_command())
         else:
@@ -126,7 +126,7 @@ def template_hints(c : Connection, magento_root : string, command_prefix=""):
     with c.cd(magento_root):
         status = cli.prompt(">>> Enter disable or enable for template hints: ")
         if (status == "enable" or status == "disable"):
-            command = "bin/magento dev:template-hints:{0}".format(status)
+            command = "bin/magento dev:template-hints:{}".format(status)
             Logger().log("Running command '{}'".format(command))
             c.run(CommandPrefix(command, command_prefix).prefix_command())
         else:
@@ -135,14 +135,14 @@ def template_hints(c : Connection, magento_root : string, command_prefix=""):
 def generate_whitelist(c : Connection, magento_root : string, command_prefix=""):
     with c.cd(magento_root):
         module_name = cli.prompt(">>> Enter module name to generate whitelist json: ")
-        command = "bin/magento setup:db-declaration:generate-whitelist --module-name={0}".format(module_name)
+        command = "bin/magento setup:db-declaration:generate-whitelist --module-name={}".format(module_name)
         Logger().log("Running command '{}'".format(command))
         c.run(CommandPrefix(command, command_prefix).prefix_command())
 
 def run_cron_group(c : Connection, magento_root : string, command_prefix=""):
         with c.cd(magento_root):
             group = cli.prompt(">>> Specify cron group to run: ")
-            command = "bin/magento cron:run --group {0}".format(group)
+            command = "bin/magento cron:run --group {}".format(group)
             Logger().log("Running command '{}'".format(command))
             c.run(CommandPrefix(command, command_prefix).prefix_command())
 

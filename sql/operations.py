@@ -10,7 +10,7 @@ def import_db(c : Connection, dump_location : string):
         db = cli.prompt(">>> Enter DB name: ")
         dump = cli.prompt(">>> Enter dump filename: ")
         if (user and db and dump):
-            c.run("mysql -u{0} -p {1} < {2}".format(user, db, dump), pty=True)
+            c.run("mysql -u{} -p {} < {}".format(user, db, dump), pty=True)
             cli.puts(".:~ Import finished: {0}".format(dump))
         else:
             cli.puts("!!! Aborted")

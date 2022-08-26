@@ -16,7 +16,7 @@ def gunzip(c : Connection , dir : string, listFiles = True, command_prefix = "")
             c.run(CommandPrefix(command, command_prefix).prefix_command())
         zip = cli.prompt(">>> Enter file to gunzip: ")
         if (zip):
-            command = "gunzip {0}".format(zip)
+            command = "gunzip {}".format(zip)
             Logger().log("Running command '{}'".format(command))
             c.run(CommandPrefix(command, command_prefix).prefix_command())
         else:
@@ -88,7 +88,7 @@ def rm(c : Connection, dir : string, command_prefix = ""):
                 c.run(CommandPrefix(command, command_prefix).prefix_command())
             else:
                 cli.puts("!!! Aborted")
-        elif c.run(CommandPrefix('test -f {0}'.format(to_delete), command_prefix).prefix_command(), warn=True):
+        elif c.run(CommandPrefix('test -f {}'.format(to_delete), command_prefix).prefix_command(), warn=True):
             confirm = cli.cli_confirm("You are about to delete the file {0}. Are you sure?".format(to_delete))
             if (confirm == "y"):
                 command = "rm -f {}".format(to_delete.strip())
@@ -97,7 +97,7 @@ def rm(c : Connection, dir : string, command_prefix = ""):
             else:
                 cli.puts("!!! Aborted")
         else:
-            cli.puts("!!! Aborted operation. {0} not found.".format(to_delete))
+            cli.puts("!!! Aborted operation. {} not found.".format(to_delete))
 
 def vim(c : Connection, dir : string, command_prefix = ""):
     with c.cd(dir):
@@ -156,13 +156,13 @@ def put(c : Connection, remote_working_dir = None):
 def cat(c : Connection, dir : string, command_prefix=""):
         with c.cd(dir):
             file = Options().remote_file_chooser(c, dir, input_text="Navigate to file to cat (CTRL+c to abort): ")
-            command = "cat {0}".format(file.strip())
+            command = "cat {}".format(file.strip())
             Logger().log("Running command '{}'".format(command))
             c.run(CommandPrefix(command, command_prefix).prefix_command(), pty=True)
 
 def cat_file(c : Connection, dir : string, file : string, command_prefix=""):
         with c.cd(dir):
-            command = "cat {0}".format(file.strip())
+            command = "cat {}".format(file.strip())
             Logger().log("Running command '{}'".format(command))
             c.run(CommandPrefix(command, command_prefix).prefix_command(), pty=True)
 
@@ -170,10 +170,9 @@ def cat_tmp_file(c : Connection, command_prefix=""):
         with c.cd("/tmp"):
             ls_tmp(c, command_prefix=command_prefix)
             file = cli.prompt(">>> Enter file to cat: ")
-            command = "cat {0}".format(file.strip())
+            command = "cat {}".format(file.strip())
             Logger().log("Running command '{}'".format(command))
             c.run(CommandPrefix(command, command_prefix).prefix_command(), pty=True)
-
 
 def set_files_permissions(c : Connection, dir : string, path : string, chmod : string, command_prefix = ""):
     with c.cd(dir):
