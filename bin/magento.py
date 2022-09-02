@@ -179,3 +179,12 @@ def enable_maintenance_mode(c : Connection, magento_root : string, command_prefi
         command = "bin/magento maintenance:enable"
         Logger().log("Running command '{}'".format(command))
         c.run(CommandPrefix(command, command_prefix).prefix_command(), pty=True)
+
+def indexer_reindex(c : Connection, magento_root : string, command_prefix="", indexers = None):
+    with c.cd(magento_root):
+        if indexers:
+            command = "bin/magento indexer:reindex {}".format(indexers)
+        else:
+            command = "bin/magento indexer:reindex"
+        Logger().log("Running command '{}'".format(command))
+        c.run(CommandPrefix(command, command_prefix).prefix_command(), pty=True)

@@ -30,20 +30,20 @@ class Service:
             index = index + 1
         return containers_dict
 
-    def exec(self, options, command = None, confirm_prompt = True):
+    def exec(self, options, command = None, confirm_prompt = True, exec_options = "-it"):
         """
         Exec a command in chosen container. Expect Options object from tif.cli.options module
         """
         container_choice = options.docker_container_chooser(self, confirm_prompt=confirm_prompt)
         if not command:
             command = cli.prompt(">>> Enter command to execute: ")
-        command = self.command(container_choice, command.strip())
+        command = self.command(container_choice, command.strip(), exec_options)
         run(command, pty=True)
 
-    def command(self, container : string, command : string):
+    def command(self, container : string, command : string, exec_options = "-it") -> string:
         """
         Returns formatted command to execute on a docker container
         """
-        command = "docker exec -it {} bash -c \"{}\"".format(container, command)
+        command = "docker exec {} {} bash -c \"{}\"".format(exec_options, container, command)
         Logger().log("Running command '{}'".format(command))
         return command
