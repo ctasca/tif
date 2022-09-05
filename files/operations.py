@@ -160,6 +160,12 @@ def cat(c : Connection, dir : string, command_prefix=""):
             Logger().log("Running command '{}'".format(command))
             c.run(CommandPrefix(command, command_prefix).prefix_command(), pty=True)
 
+def cat_and_grep(c : Connection, dir : string, file : string, grep : string, command_prefix=""):
+        with c.cd(dir):
+            command = "cat {} | grep '{}'".format(file.strip(), grep.strip())
+            Logger().log("Running command '{}'".format(command))
+            c.run(CommandPrefix(command, command_prefix).prefix_command(), pty=True)
+
 def cat_file(c : Connection, dir : string, file : string, command_prefix=""):
         with c.cd(dir):
             command = "cat {}".format(file.strip())
@@ -183,6 +189,12 @@ def set_files_permissions(c : Connection, dir : string, path : string, chmod : s
 def chown(c : Connection, dir : string, owner : string, group : string, file : string, command_prefix = ""):
     with c.cd(dir):
         command = "chown {}:{} {}".format(owner, group, file)
+        Logger().log("Running command '{}'".format(command))
+        c.run(CommandPrefix(command, command_prefix).prefix_command())
+
+def tail_f(c : Connection, dir : string, file : string, command_prefix = ""):
+    with c.cd(dir):
+        command = "tail -f {}".format(file.strip())
         Logger().log("Running command '{}'".format(command))
         c.run(CommandPrefix(command, command_prefix).prefix_command())
 

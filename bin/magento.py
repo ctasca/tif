@@ -1,6 +1,7 @@
 import string
 from fabric.connection import Connection
 from tif.fabric import cli
+from tif.files import operations as files
 from tif.fabric.logger import Logger
 from tif.fabric.CommandPrefix import CommandPrefix
 
@@ -164,9 +165,17 @@ def cat_log(c : Connection, magento_root : string, command_prefix=""):
             Logger().log("Running command '{}'".format(command))
             c.run(CommandPrefix(command, command_prefix).prefix_command(), pty=True)
             log = cli.prompt(">>> Specify log to cat: ")
-            command = "cat {0}".format(log)
+            command = "cat {}".format(log)
             Logger().log("Running command '{}'".format(command))
             c.run(CommandPrefix(command, command_prefix).prefix_command(), pty=True)
+
+def tail_log(c : Connection, magento_root : string, command_prefix=""):
+        with c.cd(magento_root + "/var/log"):
+            command = "ls"
+            Logger().log("Running command '{}'".format(command))
+            c.run(CommandPrefix(command, command_prefix).prefix_command(), pty=True)
+            log = cli.prompt(">>> Specify log to tail: ")
+            files.tail_f(c, magento_root + "/var/log", log, command_prefix)
 
 def admin_user_create(c: Connection, magento_root : string, command_prefix=""):
     with c.cd(magento_root):
