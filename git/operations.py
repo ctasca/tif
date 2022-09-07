@@ -129,12 +129,14 @@ def force_push(c : Connection, repo_dir : string, command_prefix = ""):
         else:
             cli.puts("!!! Aborted")
 
-def fetch(c : Connection, repo_dir : string, command_prefix = "", oauth2_url = None):
+def fetch(c : Connection, repo_dir : string, command_prefix = "", oauth2_url = None, branch = None):
     with c.cd(repo_dir):
         command = "git fetch"
-        Logger().log("Running command '{}'".format(command))
-        if (oauth2_url):
+        if oauth2_url:
             command = command + " " + oauth2_url
+        if branch:
+            command = command + " " + branch
+        Logger().log("Running command '{}'".format(command))
         c.run(CommandPrefix(command, command_prefix).prefix_command(), pty=True)
 
 def status(c : Connection, repo_dir : string, command_prefix = ""):
