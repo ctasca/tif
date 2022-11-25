@@ -9,7 +9,7 @@ def list_commands(c : Connection, magento_root: string, command_prefix=""):
     with c.cd(magento_root):
         command = "bin/magento list"
         Logger().log("Running command '{}'".format(command))
-        c.run(CommandPrefix(command, command_prefix).prefix_command())
+        c.run(CommandPrefix(command, command_prefix).prefix_command(), pty=True)
 
 def run(c : Connection, magento_root: string, command_prefix=""):
     with c.cd(magento_root):

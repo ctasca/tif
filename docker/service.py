@@ -47,3 +47,11 @@ class Service:
         command = "docker exec {} {} bash -c \"{}\"".format(exec_options, container, command)
         Logger().log("Running command '{}'".format(command))
         return command
+
+    def composeExec(self, yml_location: string, container : string, command : string, exec_options = "-it") -> string:
+        """
+        Returns formatted command to execute on a docker container
+        """
+        command = "cd {} && docker-compose exec {} {} bash -c \"{}\"".format(yml_location,exec_options, container, command)
+        Logger().log("Running command '{}'".format(command))
+        return command
