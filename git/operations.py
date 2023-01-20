@@ -56,6 +56,12 @@ def branch(c : Connection, repo_dir : string, command_prefix = ""):
         Logger().log("Running command '{}'".format(command))
         c.run(CommandPrefix(command, command_prefix).prefix_command())
 
+def branch_all(c : Connection, repo_dir : string, command_prefix = ""):
+    with c.cd(repo_dir):
+        command = "git branch --all"
+        Logger().log("Running command '{}'".format(command))
+        c.run(CommandPrefix(command, command_prefix).prefix_command())
+
 def current_branch(c : Connection, repo_dir : string, command_prefix = "") -> string :
     with c.cd(repo_dir):
         command = "git rev-parse --abbrev-ref HEAD"

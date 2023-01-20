@@ -52,6 +52,15 @@ class Service:
         """
         Returns formatted command to execute on a docker container
         """
-        command = "cd {} && docker-compose exec {} {} bash -c \"{}\"".format(yml_location,exec_options, container, command)
+        command = "cd {} && docker-compose exec {} {} bash -c \"{}\"".format(yml_location, exec_options, container, command)
         Logger().log("Running command '{}'".format(command))
         return command
+
+    def containerBash(self, container : string):
+        """
+        Returns formatted command to execute on a docker container
+        """
+        docker_compose_command = "docker-compose exec {} bash".format(container)
+        command = "cd {} && {}".format(self.docker_dir, docker_compose_command)
+        Logger().log("Running command '{}'".format(docker_compose_command))
+        run(command, pty=True)
