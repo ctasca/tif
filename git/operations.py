@@ -49,6 +49,16 @@ def new_branch(c: Connection, repo_dir: string, command_prefix = ""):
             c.run(CommandPrefix(command, command_prefix).prefix_command())
         else:
             cli.puts("!!! Aborted")
+
+def delete_local_branch(c: Connection, repo_dir: string, command_prefix = ""):
+    with c.cd(repo_dir):
+        delete_branch = cli.prompt(">>> Enter branch to delete: ").strip()
+        if (delete_branch):
+            command = "git branch --delete {}".format(delete_branch)
+            Logger().log("Running command '{}'".format(command))
+            c.run(CommandPrefix(command, command_prefix).prefix_command())
+        else:
+            cli.puts("!!! Aborted")
  
 def branch(c : Connection, repo_dir : string, command_prefix = ""):
     with c.cd(repo_dir):
