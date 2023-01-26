@@ -14,9 +14,9 @@ class Logger:
 
     def info(self, message : string):
         """
-        Outputs white message to console with :information: emoji
+        Outputs white message to console with :memo: emoji
         """
-        cli.puts("** {} {}".format(emoji.emojize(':information:') + " ", message))
+        cli.puts("** {} {}".format(emoji.emojize(':memo:') + " ", message))
     
     def error(self, message : string):
         """
