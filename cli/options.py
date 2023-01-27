@@ -227,6 +227,9 @@ class Options:
         elif (self.options[option].lower() == 'exit'):
             cli.puts("!!! Exited")
             exit()
+        elif (self.options[option].lower() == 'skip'):
+            cli.puts("!!! Skipped")
+            pass
         else:
             if confirm_prompt:
                 choise = cli.cli_confirm("You have chosen '{}'. Continue?".format(self.options[option]))

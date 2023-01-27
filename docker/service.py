@@ -58,7 +58,7 @@ class Service:
 
     def containerBash(self, container : string):
         """
-        Returns formatted command to execute on a docker container
+        Logs into a container bash
         """
         docker_compose_command = "docker-compose exec {} bash".format(container)
         command = "cd {} && {}".format(self.docker_dir, docker_compose_command)

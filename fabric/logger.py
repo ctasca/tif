@@ -16,7 +16,7 @@ class Logger:
         """
         Outputs white message to console with :memo: emoji
         """
-        cli.puts("*** {} {}".format(emoji.emojize(':memo:'), message))
+        cli.puts("!! {} {}".format(emoji.emojize(':memo:'), message))
     
     def error(self, message : string):
         """
