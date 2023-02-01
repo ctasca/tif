@@ -64,3 +64,11 @@ class Service:
         command = "cd {} && {}".format(self.docker_dir, docker_compose_command)
         Logger().log("Running command '{}'".format(docker_compose_command))
         run(command, pty=True)
+    
+    def restart_container(self, container : string):
+        """
+        Restart a container
+        """
+        command = "docker restart {}".format(container)
+        Logger().log("Running command '{}'".format(command))
+        run(command, pty=True)

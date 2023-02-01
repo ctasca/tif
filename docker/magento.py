@@ -34,11 +34,15 @@ class Cloud:
             else:
                 Logger().error("ece-patches apply command exited with error")
 
-    def exec_db_query(self, c : Connection, container : string, db_user : string, db_password : string, db_name : string, query: string):
+    def exec_db_query(self, c : Connection, container : string, db_user : string, db_password : string, db_name : string, query: string, capture = False):
         with c.cd(self.docker_dir):
             command = 'docker exec {} mysql -u{} -p{} {} -e "{}"'.format(container, db_user, db_password, db_name, query)
             Logger().log("Running command '{}'".format(command))
-            c.run(command, pty=True)
+            if capture == True:
+                result = c.run(command, hide=True, warn=True)
+                return result.stdout
+            else:
+                c.run(command, pty=True)
 
     def cloud_deploy(self, c : Connection):
         with c.cd(self.docker_dir):

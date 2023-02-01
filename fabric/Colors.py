@@ -23,6 +23,8 @@ class Colors:
         def get(self, text):
             if re.match(r'^\>\>\>', text):
                 return cyan(text[4:])
+            if re.match(r'^\-\-\-', text):
+                return magenta(text[4:])
             if re.match(r'^\*\*\s', text):
                 return white(text[3:])
             if re.match(r'^\*\*\*', text):
