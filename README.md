@@ -1,4 +1,4 @@
-# The Innovation Factory Python Package
+# Tif Python Package
 
 ## Python version
 Python 3.8.9
