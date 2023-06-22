@@ -1,4 +1,5 @@
-# The TIF Package
+
+# TIF
 
 ## Python version
 Python 3.8.9
