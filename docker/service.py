@@ -48,7 +48,7 @@ class Service:
         Logger().log("Running command '{}'".format(command))
         return command
 
-    def composeExec(self, yml_location: string, container : string, command : string, exec_options = "-it") -> string:
+    def compose_exec(self, yml_location: string, container : string, command : string, exec_options = "-it") -> string:
         """
         Returns formatted command to execute on a docker container
         """
@@ -56,7 +56,7 @@ class Service:
         Logger().log("Running command '{}'".format(command))
         return command
 
-    def containerBash(self, container : string):
+    def container_bash(self, container : string):
         """
         Logs into a container bash
         """
@@ -67,8 +67,24 @@ class Service:
     
     def restart_container(self, container : string):
         """
-        Restart a container
+        Restarts a container
         """
         command = "docker restart {}".format(container)
+        Logger().log("Running command '{}'".format(command))
+        run(command, pty=True)
+
+    def stop_container(self, container : string):
+        """
+        Stops a container
+        """
+        command = "docker stop {}".format(container)
+        Logger().log("Running command '{}'".format(command))
+        run(command, pty=True)
+
+    def start_container(self, container : string):
+        """
+        Starts a container
+        """
+        command = "docker start {}".format(container)
         Logger().log("Running command '{}'".format(command))
         run(command, pty=True)
